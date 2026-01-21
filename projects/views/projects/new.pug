@@ -1,0 +1,8 @@
+extends ../layout
+
+block content
+  h1 Novi projekt
+  form(method="post", action="/projects")
+    include ./_form_fields.pug
+    button.btn.btn-primary(type="submit") Spremi
+    a.btn.btn-secondary(href="/projects") Odustani

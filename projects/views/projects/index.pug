@@ -1,0 +1,49 @@
+extends ../layout
+
+block content
+  h1 Projekti
+  a.btn.btn-primary.mb-3(href="/projects/new") Novi projekt
+  
+  h3 Projekti na kojima sam voditelj
+  if managerProjects.length
+    table.table.table-striped
+      thead
+        tr
+          th Naziv
+          th Cijena
+          th Početak
+          th Kraj
+          th Akcije
+      tbody
+        each p in managerProjects
+          tr
+            td: a(href=`/projects/${p._id}`)= p.title
+            td= p.price != null ? p.price.toFixed(2) : '-'
+            td= p.startDate ? p.startDate.toDateString() : '-'
+            td= p.endDate ? p.endDate.toDateString() : '-'
+            td
+              a.btn.btn-sm.btn-secondary(href=`/projects/${p._id}/edit`) Uredi
+              form(action=`/projects/${p._id}?_method=DELETE`, method="post", style="display:inline")
+                button.btn.btn-sm.btn-danger(type="submit") Obriši
+  else
+    p Nema projekata na kojima ste voditelj.
+
+  h3.mt-5 Projekti na kojima sam član tima
+  if memberProjects.length
+    table.table.table-striped
+      thead
+        tr
+          th Naziv
+          th Voditelj
+          th Obavljeni poslovi
+          th Akcije
+      tbody
+        each p in memberProjects
+          tr
+            td: a(href=`/projects/${p._id}`)= p.title
+            td= p.manager ? p.manager.username : 'Nepoznato'
+            td= p.completedTasks
+            td
+              a.btn.btn-sm.btn-secondary(href=`/projects/${p._id}/edit`) Ažuriraj poslove
+  else
+    p Nema projekata na kojima ste član tima.

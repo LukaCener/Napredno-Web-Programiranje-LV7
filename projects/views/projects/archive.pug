@@ -1,0 +1,44 @@
+extends ../layout
+
+block content
+  h1 Arhiva Projekata
+  
+  h3 Projekti na kojima sam bio voditelj
+  if managerProjects.length
+    table.table.table-striped
+        thead
+            tr
+                th Naziv
+                th Cijena
+                th Početak
+                th Kraj
+                th Akcije
+        tbody
+            each p in managerProjects
+                tr
+                    td: a(href=`/projects/${p._id}`)= p.title
+                    td= p.price != null ? p.price.toFixed(2) : '-'
+                    td= p.startDate ? p.startDate.toDateString() : '-'
+                    td= p.endDate ? p.endDate.toDateString() : '-'
+                    td
+                        a.btn.btn-sm.btn-secondary(href=`/projects/${p._id}/edit`) Uredi
+
+  else
+    p Nema arhiviranih projekata na kojima ste bili voditelj.
+
+  h3.mt-5 Projekti na kojima sam bio član tima
+  if memberProjects.length
+    table.table.table-striped
+        thead
+            tr
+                th Naziv
+                th Voditelj
+                th Obavljeni poslovi
+        tbody
+            each p in memberProjects
+                tr
+                    td: a(href=`/projects/${p._id}`)= p.title
+                    td= p.manager ? p.manager.username : 'Nepoznato'
+                    td= p.completedTasks
+  else
+    p Nema arhiviranih projekata na kojima ste bili član tima.

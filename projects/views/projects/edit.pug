@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+  h1 Uredi projekt
+  form(method="post", action=`/projects/${project._id}?_method=PUT`)
+    if isManager
+        include ./_form_fields.pug
+    else
+        p.font-weight-bold Projekt: #{project.title}
+        p Opis: #{project.description}
+        .form-group
+            label(for="completedTasks") Ažuriraj obavljene poslove:
+            input.form-control(type="number", name="completedTasks", value=(project.completedTasks != null ? project.completedTasks : 0))
+    button.btn.btn-primary(type="submit") Spremi
+    a.btn.btn-secondary(href=`/projects/${project._id}`) Odustani

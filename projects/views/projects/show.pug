@@ -1,0 +1,47 @@
+extends ../layout
+
+block content
+  h1= project.title
+  if project.archived
+    span.badge.badge-warning Arhivirano
+
+  p
+    strong Voditelj:
+    |  #{project.manager ? project.manager.username : 'Nepoznato'}
+
+  p
+    strong Opis:
+    |  #{project.description || '-'}
+  p
+    strong Cijena:
+    |  #{project.price != null ? project.price.toFixed(2) : '-'}
+  p
+    strong Obavljeni poslovi:
+    |  #{project.completedTasks}
+  p
+    strong Početak:
+    |  #{project.startDate ? project.startDate.toDateString() : '-'}
+  p
+    strong Završetak:
+    |  #{project.endDate ? project.endDate.toDateString() : '-'}
+
+  hr
+  h3 Članovi tima
+  if project.team.length
+    ul.list-group
+      each member in project.team
+        li.list-group-item
+          span #{member.username}
+  else
+    p Nema članova tima.
+    
+  hr
+  
+  if isManager
+    a.btn.btn-primary.mr-2(href=`/projects/${project._id}/edit`) Uredi
+    form(action=`/projects/${project._id}?_method=DELETE`, method="post", style="display:inline")
+        button.btn.btn-danger(type="submit") Obriši
+  else if isMember
+    a.btn.btn-primary.mr-2(href=`/projects/${project._id}/edit`) Ažuriraj poslove
+
+  a.btn.btn-secondary.ml-2(href="/projects") Natrag
